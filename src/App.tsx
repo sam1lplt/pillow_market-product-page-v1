@@ -804,6 +804,43 @@ export default function App() {
     setPillowConfigs((prev) => { const c = [...prev]; c[index] = { ...c[index], [key]: value }; return c })
   }
 
+  const touchStartX = useRef<number>(0)
+  const touchStartY = useRef<number>(0)
+  const touchEndX = useRef<number>(0)
+  const touchEndY = useRef<number>(0)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX
+    touchStartY.current = e.targetTouches[0].clientY
+    touchEndX.current = e.targetTouches[0].clientX
+    touchEndY.current = e.targetTouches[0].clientY
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX
+    touchEndY.current = e.targetTouches[0].clientY
+  }
+
+  const handleTouchEnd = (onTap?: () => void) => {
+    const diffX = touchStartX.current - touchEndX.current
+    const diffY = touchStartY.current - touchEndY.current
+
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handleNextImage()
+      } else {
+        handlePrevImage()
+      }
+    } else if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+      if (onTap) onTap()
+    }
+
+    touchStartX.current = 0
+    touchEndX.current = 0
+    touchStartY.current = 0
+    touchEndY.current = 0
+  }
+
   const handlePrevImage = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
     setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length)
@@ -872,8 +909,11 @@ export default function App() {
               ))}
             </div>
             <div
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={() => handleTouchEnd(() => setShowLightboxModal(true))}
               onClick={() => setShowLightboxModal(true)}
-              className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-[2/3] max-h-[calc(100vh-180px)] cursor-zoom-in"
+              className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-[2/3] max-h-[calc(100vh-180px)] cursor-zoom-in select-none touch-pan-y"
             >
               <img key={`${currentProductId}-${selectedImage}`} src={currentImg.src} className="w-full h-full object-contain animate-image-fade group-hover:scale-105 transition-transform duration-500" alt={currentImg.desc} />
               
@@ -1535,7 +1575,13 @@ export default function App() {
           </div>
 
           {/* MAIN IMAGE & NAVIGATION ARROWS */}
-          <div className="relative flex-1 w-full max-w-[1000px] flex items-center justify-center my-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={() => handleTouchEnd()}
+            className="relative flex-1 w-full max-w-[1000px] flex items-center justify-center my-4 overflow-hidden select-none touch-pan-y"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={handlePrevImage}
               className="absolute left-2 md:left-4 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all hover:scale-110 cursor-pointer backdrop-blur-xs shadow-lg"
