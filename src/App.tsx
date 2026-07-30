@@ -1,4 +1,3 @@
-// Pillow Market Premium Shopify E-commerce UI v4 — Multi Product
 import { useState, useEffect, useRef } from "react"
 import {
   Moon,
@@ -18,11 +17,20 @@ import {
   Shield,
   Heart,
   Wind,
+  Stethoscope,
+  Flame,
+  RotateCcw,
+  Activity,
+  Award,
+  Sliders,
+  HelpCircle,
+  Sparkle,
+  ArrowRight,
 } from "lucide-react"
 
 type Softness = "yumusak" | "extra"
 type Shipping = "rollpack" | "keten" | "kutu"
-type ProductId = "jelli" | "softy"
+type ProductId = "jelli" | "softy" | "ergo"
 
 const SHIPPING_OPTIONS = [
   { id: "rollpack" as const, label: "Şeffaf Roll Pack", desc: "Vakumlu sıkıştırılmış, hacim kaybetmez", price: 0, icon: Package },
@@ -82,7 +90,7 @@ const PRODUCTS: Record<ProductId, any> = {
     stats: [
       { val: "94%", label: "BOYUN AĞRISI AZALMASI" },
       { val: "−4°C", label: "YÜZEY SICAKLIĞI FARKI" },
-      { val: "5 yıl", label: "ŞEKİL GARANTİSİ" },
+      { val: "10 yıl", label: "ŞEKİL GARANTİSİ" },
       { val: "OEKO-TEX", label: "SERTİFİKALI ÜRETİM" },
     ],
     statBandTitle: "10 Yıllık Ar-Ge'nin Ürünü",
@@ -132,11 +140,12 @@ const PRODUCTS: Record<ProductId, any> = {
       { f: "Boyun Desteği", v: "ErgoZone™", s: "Tek yoğunluk", g: "Yetersiz" },
       { f: "Anti-Alerjik", v: "SilverShield™", s: "Kısmi", g: "Yok" },
       { f: "Hava Sirkülasyonu", v: "AirChannel™ 3D", s: "Yoğun köpük", g: "Orta" },
-      { f: "Şekil Garantisi", v: "5 yıl", s: "2 yıl", g: "6 ay" },
+      { f: "Şekil Garantisi", v: "10 yıl", s: "2 yıl", g: "6 ay" },
       { f: "OEKO-TEX®", v: "Var", s: "Yok", g: "Yok" },
     ],
     crossSell: [
-      { id: "softy", name: "Softy Visco Yastık", price: "₺990", img: "/images/softy-1.png", tag: "Diğer Model", isProduct: true },
+      { id: "softy", name: "Softy Visco Yastık", price: "₺990", img: "/images/softy-1.png", tag: "Bulut Yumuşaklığı", isProduct: true },
+      { id: "ergo", name: "ErgoPro Medikal Fıtık Yastığı", price: "₺1.190", img: "/images/product-layers.png", tag: "Boyun Fıtığı Özel", isProduct: true },
     ],
   },
 
@@ -177,7 +186,7 @@ const PRODUCTS: Record<ProductId, any> = {
     stats: [
       { val: "89%", label: "BOYUN AĞRISI AZALMASI" },
       { val: "Ultra", label: "YUMUŞAKLIK SINIFI" },
-      { val: "5 yıl", label: "ŞEKİL GARANTİSİ" },
+      { val: "10 yıl", label: "ŞEKİL GARANTİSİ" },
       { val: "OEKO-TEX", label: "SERTİFİKALI ÜRETİM" },
     ],
     statBandTitle: "Konforun Yeni Tanımı",
@@ -227,20 +236,491 @@ const PRODUCTS: Record<ProductId, any> = {
       { f: "Boyun Desteği", v: "ErgoNeck™ Kanal", s: "Tek yoğunluk", g: "Yetersiz" },
       { f: "Anti-Alerjik", v: "SilverShield™", s: "Kısmi", g: "Yok" },
       { f: "Hava Sirkülasyonu", v: "AirFlow™ 3D", s: "Yoğun köpük", g: "Orta" },
-      { f: "Şekil Garantisi", v: "5 yıl", s: "2 yıl", g: "6 ay" },
+      { f: "Şekil Garantisi", v: "10 yıl", s: "2 yıl", g: "6 ay" },
       { f: "OEKO-TEX®", v: "Var", s: "Yok", g: "Yok" },
     ],
     crossSell: [
-      { id: "jelli", name: "Jelli Serinletici Visco Yastık", price: "₺1.290", img: "/images/product-hero.jpg", tag: "Diğer Model", isProduct: true },
+      { id: "jelli", name: "Jelli Serinletici Visco Yastık", price: "₺1.290", img: "/images/product-hero.jpg", tag: "Serinletici Jel", isProduct: true },
+      { id: "ergo", name: "ErgoPro Medikal Fıtık Yastığı", price: "₺1.190", img: "/images/product-layers.png", tag: "Boyun Fıtığı Özel", isProduct: true },
     ],
   },
+
+  ergo: {
+    id: "ergo",
+    name: "ErgoPro Medikal Fıtık Yastığı",
+    shortName: "ErgoPro Medikal",
+    series: "MEDİKAL & ERGONOMİ SERİSİ",
+    badge1: "BOYUN FITIĞI ÖZEL",
+    badge2: "%98 UYUM",
+    basePrice: 1190,
+    rating: 4.95,
+    reviewCount: 1540,
+    images: [
+      { src: "/images/product-layers.png", label: "Kapak", desc: "ErgoPro Medikal Fıtık Yastığı" },
+      { src: "/images/product-model.jpg", label: "Kullanım", desc: "Anatomik Boyun Desteği" },
+      { src: "/images/product-dimensions.jpg", label: "Ölçüler", desc: "60 × 40 × 13/10 cm (Çift Kavis)" },
+      { src: "/images/product-hero.jpg", label: "Katmanlar", desc: "Çift Yükseklik Profili" },
+      { src: "/images/product-gel-detail.jpg", label: "Bambu Kılıf", desc: "Anti-Alerjik Dokuma" },
+    ],
+    forms: [
+      { id: "ciftkavis", label: "Çift Kavisli Form", sub: "60×40×13/10 cm · 1300g", priceDelta: 0 },
+      { id: "duzmedikal", label: "Düz Medikal Form", sub: "60×40×11 cm · 1100g", priceDelta: -100 },
+    ],
+    softnessOpts: [
+      { id: "yumusak", label: "Orta Sert Ortopedik", sub: "Ideal omurga desteği", extra: "", priceDelta: 0 },
+      { id: "extra", label: "Ekstra Yoğun Medikal", sub: "Tam boyun sabitleme", extra: "+₺150", priceDelta: 150 },
+    ],
+    formLabel: "Medikal Form Tipi",
+    features: [
+      { icon: ShieldCheck, title: "Boyun Fıtığı Desteği", desc: "Omurga disklerine binen baskıyı %94 azaltır" },
+      { icon: Moon, title: "Anatomik Cervical Oluk", desc: "Baş ve boyun eğrisini milimetrik destekler" },
+      { icon: Cloud, title: "Nefes Alan Bambu Kılıf", desc: "Alerjen barındırmayan %100 doğal lif doku" },
+      { icon: Box, title: "Çift Yükseklik Profili", desc: "13 cm & 10 cm çift taraflı kullanım ergonomisi" },
+      { icon: Shield, title: "Ortopedik Onaylı", desc: "Fizyoterapist ve ortopedi uzmanları önerisi" },
+      { icon: Recycle, title: "10 Yıl Şekil Garantisi", desc: "Çökme yapmayan yüksek yoğunluklu visco" },
+    ],
+    stats: [
+      { val: "%98", label: "BOYUN AĞRISINDA AZALMA" },
+      { val: "13/10", label: "ÇİFT KAVİSLİ YÜKSEKLİK" },
+      { val: "10 Yıl", label: "ŞEKİL GARANTİSİ" },
+      { val: "OEKO-TEX", label: "MEDİKAL SERTİFİKALI" },
+    ],
+    statBandTitle: "Fizyoterapist Onaylı Medikal Konfor",
+    statBandDesc: "Boyun fıtığı, servikal lordoz düzleşmesi ve kronik tutulma yaşayanlar için özel anatomik oluk ve çift kavisli profil.",
+    showcaseTitle: "ErgoPro'nun Anatomi Teknolojisi",
+    showcaseSubtitle: "MEDİKAL & ERGONOMİK ÇÖZÜM",
+    showcaseDesc: "Omurgaya binen yükü gece boyunca sıfırlayan özel servikal oluk mimarisi. Gece boyunca ideal hizada bir uyku duruşu.",
+    showcaseRows: [
+      {
+        num: "01", label: "SERVİKAL ANATOMİK OLUK", title: "Omurga Disklerini Rahatlatan Form",
+        desc: "Özel eğimli merkez oluğu sayesinde başınız doğru derinliğe oturur, boyun omurları doğal kavisini korur.",
+        img: "/images/product-layers.png", imgLabel: "01 / ANATOMİK DOKU", imgAlt: "ErgoPro Oluk Şeması", imgSide: "left",
+        bullets: [
+          { title: "Çift Yükseklik Eğim Katmanı", sub: "Hem yüksek hem alçak yastık sevenler için 2 farklı taraf" },
+          { title: "Basınç Dağıtıcı Visco", sub: "Omuz ve boyun kaslarındaki gerginliği 15 dakikada çözer" },
+          { title: "Medikal Bambu Kılıf", sub: "Hassas ciltler için yıkanabilir anti-bakteriyel kumaş" },
+        ],
+        highlight: null, specs: null,
+      },
+      {
+        num: "02", label: "FITIK & AĞRI UYUMU", title: "%98 Kullanıcı Memnuniyeti",
+        desc: "Klinik değerlendirmelerde boyun ağrısı ve fıtık kaynaklı uykusuzluk şikayetlerinde ilk 7 günde belirgin azalma tespit edilmiştir.",
+        img: "/images/product-model.jpg", imgLabel: "02 / ANATOMİK DESTEK", imgAlt: "Boyun Fıtığı Destek", imgSide: "right",
+        bullets: null,
+        highlight: { val: "%98", title: "Klinik Ağrı Azalma Oranı", sub: "Fizyoterapi hastalarında test edilmiştir" },
+        specs: null,
+      },
+      {
+        num: "03", label: "ÇİFT KAVİSLİ ÖLÇÜ", title: "60 × 40 × 13/10 cm Çift Profil",
+        desc: "Yastığın bir tarafı 13 cm yüksekliğinde yan yatanlar için, diğer tarafı 10 cm yüksekliğinde sırt üstü yatanlar için tasarlanmıştır.",
+        img: "/images/product-dimensions.jpg", imgLabel: "03 / ÇİFT PROFİL", imgAlt: "ErgoPro Ölçüler", imgSide: "left",
+        bullets: null, highlight: null,
+        specs: [{ val: "60 cm", label: "En" }, { val: "40 cm", label: "Boy" }, { val: "13/10 cm", label: "Yükseklik" }],
+      },
+    ],
+    techCards: [
+      { icon: ShieldCheck, title: "CervicalContour™", desc: "Boyun omurlarını sıfır basınç ile kavrayan özel oluk tasarımı." },
+      { icon: Sparkles, title: "HighDense™ Visco", desc: "75 kg/m³ yoğunluğunda medikal visco foam. Çökme yapmaz." },
+      { icon: Wind, title: "BambooTouch™ Kılıf", desc: "Doğal bambu lifli anti-alerjik yıkanabilir kılıf." },
+      { icon: Shield, title: "SilverShield™", desc: "Bakteri ve akar üremesine karşı %99.9 hijyenik koruma." },
+      { icon: Box, title: "DualHeight™", desc: "İki farklı yükseklik opsiyonu tek yastıkta." },
+      { icon: Recycle, title: "10 Yıl Garanti", desc: "Sarkma ve çökme garantili medikal köpük kalitesi." },
+    ],
+    comparisonName: "ErgoPro Medikal",
+    comparisonRows: [
+      { f: "Boyun Fıtığı Desteği", v: "CervicalContour™", s: "Yetersiz", g: "Yok" },
+      { f: "Çift Yükseklik Profili", v: "13 / 10 cm", s: "Tek Yükseklik", g: "Değişken" },
+      { f: "Anti-Alerjik", v: "SilverShield™ Bambu", s: "Kısmi", g: "Yok" },
+      { f: "Hava Sirkülasyonu", v: "AirFlow™ 3D", s: "Köpük", g: "Orta" },
+      { f: "Şekil Garantisi", v: "10 yıl Medikal", s: "2 yıl", g: "6 ay" },
+      { f: "OEKO-TEX®", v: "Var (Medikal Class)", s: "Yok", g: "Yok" },
+    ],
+    crossSell: [
+      { id: "jelli", name: "Jelli Serinletici Visco Yastık", price: "₺1.290", img: "/images/product-hero.jpg", tag: "Serinletici Jel", isProduct: true },
+      { id: "softy", name: "Softy Visco Yastık", price: "₺990", img: "/images/softy-1.png", tag: "Bulut Yumuşaklığı", isProduct: true },
+    ],
+  },
+}
+
+function PillowAssistant({
+  onSelectProduct,
+  onOpenConfig,
+  isModal = false,
+  onCloseModal,
+}: {
+  onSelectProduct: (id: ProductId) => void
+  onOpenConfig: () => void
+  isModal?: boolean
+  onCloseModal?: () => void
+}) {
+  const [step, setStep] = useState(0) // 0: Presets/Intro, 1: Neck, 2: Sweat, 3: Position, 4: Firmness, 5: Result
+  const [answers, setAnswers] = useState({
+    neck: "",
+    sweat: "",
+    position: "",
+    firmness: "",
+  })
+  const [recommendedId, setRecommendedId] = useState<ProductId>("ergo")
+  const [matchScore, setMatchScore] = useState(98)
+  const [matchReasons, setMatchReasons] = useState<string[]>([])
+
+  const calculateResult = (finalAnswers: typeof answers) => {
+    let scores = { ergo: 0, jelli: 0, softy: 0 }
+
+    if (finalAnswers.neck === "fitik") scores.ergo += 5
+    else if (finalAnswers.neck === "tutulma") { scores.ergo += 3; scores.jelli += 2 }
+    else { scores.softy += 2; scores.jelli += 2 }
+
+    if (finalAnswers.sweat === "cok") scores.jelli += 5
+    else if (finalAnswers.sweat === "orta") { scores.jelli += 3; scores.ergo += 1 }
+    else { scores.softy += 2; scores.ergo += 2 }
+
+    if (finalAnswers.position === "sirt") scores.ergo += 3
+    else if (finalAnswers.position === "yan") { scores.jelli += 2; scores.softy += 2 }
+    else { scores.softy += 4 }
+
+    if (finalAnswers.firmness === "medikal") scores.ergo += 4
+    else if (finalAnswers.firmness === "jel") scores.jelli += 4
+    else scores.softy += 4
+
+    let bestId: ProductId = "ergo"
+    let max = -1
+    for (const [key, val] of Object.entries(scores)) {
+      if (val > max) {
+        max = val
+        bestId = key as ProductId
+      }
+    }
+
+    const reasons: string[] = []
+    if (finalAnswers.neck === "fitik") {
+      reasons.push("Boyun fıtığı ve omurga disk yükünü %94 azaltan anatomik oluk desteği")
+    } else if (finalAnswers.neck === "tutulma") {
+      reasons.push("Sabah boyun tutulmalarını önleyen ergonomik bellek köpüğü dokusu")
+    }
+
+    if (finalAnswers.sweat === "cok") {
+      reasons.push("Gece terlemelerini önleyen 4–5°C serinletici termosensitif jel teknolojisi")
+    } else if (finalAnswers.sweat === "orta") {
+      reasons.push("Nem birikimini önleyen AirChannel™ 3D nefes alan kılıf yapısı")
+    }
+
+    if (finalAnswers.position === "sirt") {
+      reasons.push("Sırt üstü yatışlarda omurga hiza açısını 180° koruyan dual-height kavis")
+    } else if (finalAnswers.position === "yan") {
+      reasons.push("Yan yatışlarda omuz çökmesini engelleyen ideal profil yüksekliği")
+    } else if (finalAnswers.position === "donerek") {
+      reasons.push("Dönerek yatanlar için basıyı sıfırlayan bulut yumuşaklığında visco çekirdek")
+    }
+
+    if (reasons.length < 2) {
+      if (bestId === "ergo") reasons.push("Fizyoterapist onaylı medikal cervical oluk teknolojisi")
+      if (bestId === "jelli") reasons.push("ArcticTouch™ serinletici yüzey ve hava dolaşımlı doku")
+      if (bestId === "softy") reasons.push("UltraSoft™ özel bulut hisli visco çekirdek")
+    }
+
+    setRecommendedId(bestId)
+    setMatchReasons(reasons)
+    setMatchScore(97 + Math.floor(Math.random() * 3))
+    setStep(5)
+  }
+
+  const handleSelectAnswer = (key: keyof typeof answers, val: string, nextStep: number) => {
+    const updated = { ...answers, [key]: val }
+    setAnswers(updated)
+    if (nextStep <= 4) {
+      setStep(nextStep)
+    } else {
+      calculateResult(updated)
+    }
+  }
+
+  const applyPreset = (presetId: ProductId, presetAnswers: typeof answers) => {
+    setAnswers(presetAnswers)
+    calculateResult(presetAnswers)
+  }
+
+  const resetQuiz = () => {
+    setAnswers({ neck: "", sweat: "", position: "", firmness: "" })
+    setStep(0)
+  }
+
+  const recProduct = PRODUCTS[recommendedId]
+
+  return (
+    <div className={`w-full ${isModal ? "bg-white rounded-2xl p-6 md:p-8 max-w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl border border-navy/15 relative" : "bg-[#FAF8F5] rounded-3xl p-6 md:p-10 border border-gold/30 shadow-sm relative overflow-hidden"}`}>
+      {isModal && onCloseModal && (
+        <button onClick={onCloseModal} className="absolute top-5 right-5 w-9 h-9 rounded-full bg-navy/5 hover:bg-navy/10 text-navy flex items-center justify-center transition-colors cursor-pointer z-10">
+          <X size={18} />
+        </button>
+      )}
+
+      {/* HEADER */}
+      <div className="text-center max-w-[620px] mx-auto mb-8">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold/15 border border-gold/40 text-gold font-bold text-[11px] uppercase tracking-wider mb-3">
+          <Sparkles size={14} className="text-gold" />
+          <span>AKILLI YASTIK REHBERİ</span>
+        </div>
+        <h3 className="text-2xl md:text-3xl font-extrabold text-navy tracking-tight mb-2">
+          Hangi Yastık Sana Uygun?
+        </h3>
+        <p className="text-xs md:text-sm text-navy/70 leading-relaxed">
+          Boyun fıtığı, gece terlemesi ve uyku alışkanlıklarınıza göre 3 soruda kişiselleştirilmiş yastığınızı bulun.
+        </p>
+      </div>
+
+      {/* STEP 0: START QUIZ */}
+      {step === 0 && (
+        <div className="space-y-6 animate-image-fade max-w-[640px] mx-auto text-center">
+          <div className="bg-white border border-navy/10 rounded-2xl p-8 space-y-5 shadow-2xs">
+            <div className="w-14 h-14 rounded-2xl bg-gold/15 text-gold flex items-center justify-center mx-auto border border-gold/30">
+              <Sparkles size={28} />
+            </div>
+            <div>
+              <h4 className="text-xl font-extrabold text-navy mb-2">4 Adımda Size Özel İdeal Yastığı Bulalım</h4>
+              <p className="text-xs md:text-sm text-navy/65 max-w-[480px] mx-auto leading-relaxed">
+                Boyun sağlığınız, gece terlemesi şikayetiniz, yatış pozisyonunuz ve sertlik tercihinizi değerlendirip %100 uyumlu yastık modelinizi eşleştirelim.
+              </p>
+            </div>
+            <button
+              onClick={() => setStep(1)}
+              className="bg-navy hover:bg-navy/90 text-white text-xs md:text-sm font-bold uppercase tracking-widest px-10 py-4 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2 cursor-pointer"
+            >
+              <span>Testi Başlat (30 Saniye)</span>
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 1: BOYUN & OMUZ SAĞLIĞI */}
+      {step === 1 && (
+        <div className="space-y-6 animate-image-fade max-w-[640px] mx-auto">
+          <div className="flex items-center justify-between text-xs font-bold text-navy/60 border-b border-navy/8 pb-3">
+            <span>SORU 1 / 4</span>
+            <span className="text-gold font-mono">ADIM %25</span>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-navy mb-1">Boyun ve Omurga Şikayetiniz Var mı?</h4>
+            <p className="text-xs text-navy/65">Boyun sağlığınız için en ideal eğim ve sertlik seviyesini belirliyoruz.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              { id: "fitik", icon: Stethoscope, title: "Evet, boyun fıtığı / düzleşme veya fıtık başlangıcı var", sub: "Omurga disklerini rahatlatacak ortopedik oluklu destek gereklidir." },
+              { id: "tutulma", icon: Activity, title: "Sık sık sabah tutulması ve omuz ağrısı yaşıyorum", sub: "Kas gerginliğini azaltan orta sertlikte ergonomik bellek köpüğü." },
+              { id: "yok", icon: Heart, title: "Belirgin bir ağrım yok, genel konfor ve rahatlık arıyorum", sub: "Dengeli destek ve yumuşak sarım hissiyatı." },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => handleSelectAnswer("neck", opt.id, 2)}
+                className="w-full text-left p-4 rounded-xl border-2 border-navy/10 hover:border-gold bg-white hover:bg-[#FAF6F0]/40 transition-all flex items-start gap-4 group cursor-pointer"
+              >
+                <div className="p-3 rounded-lg bg-navy/5 text-navy group-hover:bg-gold group-hover:text-white transition-colors shrink-0 mt-0.5">
+                  <opt.icon size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-navy group-hover:text-gold transition-colors">{opt.title}</p>
+                  <p className="text-xs text-navy/60 mt-0.5">{opt.sub}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* STEP 2: GECE TERLEMESİ & SICAKLIK */}
+      {step === 2 && (
+        <div className="space-y-6 animate-image-fade max-w-[640px] mx-auto">
+          <div className="flex items-center justify-between text-xs font-bold text-navy/60 border-b border-navy/8 pb-3">
+            <span>SORU 2 / 4</span>
+            <span className="text-gold font-mono">ADIM %50</span>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-navy mb-1">Gece Terlemesi ve Sıcaklık Durumunuz Nasıl?</h4>
+            <p className="text-xs text-navy/65">Uykunuzu bölen hararet durumunu ortadan kaldırmak için doğru katmanı seçelim.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              { id: "cok", icon: ThermometerSnowflake, title: "Çok terliyorum, gece uyanıyorum, serinlik hissi şart", sub: "4–5°C serinlik hissi sağlayan soğuk jel teknolojisi önerilir." },
+              { id: "orta", icon: Wind, title: "Bazen hararet yapabiliyor, hava sirkülasyonu yüksek olsun", sub: "Nem birikimini önleyen 3D mikro hava kanallı kumaş yapısı." },
+              { id: "yok", icon: Cloud, title: "Terleme problemim yok, standart pamuklu ferahlık yeterli", sub: "Nefes alan anti-alerjik yıkanabilir kumaş." },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => handleSelectAnswer("sweat", opt.id, 3)}
+                className="w-full text-left p-4 rounded-xl border-2 border-navy/10 hover:border-gold bg-white hover:bg-[#FAF6F0]/40 transition-all flex items-start gap-4 group cursor-pointer"
+              >
+                <div className="p-3 rounded-lg bg-navy/5 text-navy group-hover:bg-gold group-hover:text-white transition-colors shrink-0 mt-0.5">
+                  <opt.icon size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-navy group-hover:text-gold transition-colors">{opt.title}</p>
+                  <p className="text-xs text-navy/60 mt-0.5">{opt.sub}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* STEP 3: UYKU POZİSYONU */}
+      {step === 3 && (
+        <div className="space-y-6 animate-image-fade max-w-[640px] mx-auto">
+          <div className="flex items-center justify-between text-xs font-bold text-navy/60 border-b border-navy/8 pb-3">
+            <span>SORU 3 / 4</span>
+            <span className="text-gold font-mono">ADIM %75</span>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-navy mb-1">Ağırlıklı Uyku Pozisyonunuz Nedir?</h4>
+            <p className="text-xs text-navy/65">Omurganızın doğal çizgisini bozmayacak profil yüksekliğini belirliyoruz.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              { id: "yan", icon: Moon, title: "Genellikle Yan Yatıyorum", sub: "Omuz genişliğinize göre boynu askıda bırakmayan yüksek profil." },
+              { id: "sirt", icon: Shield, title: "Genellikle Sırt Üstü Yatıyorum", sub: "Boyun kavisini dolduran özel oluklu ortopedik form." },
+              { id: "donerek", icon: RotateCcw, title: "Yüz Üstü veya Sürekli Dönerek Yatıyorum", sub: "Soluk almayı kolaylaştıran alçak ve ekstra yumuşak visco." },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => handleSelectAnswer("position", opt.id, 4)}
+                className="w-full text-left p-4 rounded-xl border-2 border-navy/10 hover:border-gold bg-white hover:bg-[#FAF6F0]/40 transition-all flex items-start gap-4 group cursor-pointer"
+              >
+                <div className="p-3 rounded-lg bg-navy/5 text-navy group-hover:bg-gold group-hover:text-white transition-colors shrink-0 mt-0.5">
+                  <opt.icon size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-navy group-hover:text-gold transition-colors">{opt.title}</p>
+                  <p className="text-xs text-navy/60 mt-0.5">{opt.sub}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* STEP 4: SERTLİK / HİSSİYAT */}
+      {step === 4 && (
+        <div className="space-y-6 animate-image-fade max-w-[640px] mx-auto">
+          <div className="flex items-center justify-between text-xs font-bold text-navy/60 border-b border-navy/8 pb-3">
+            <span>SORU 4 / 4</span>
+            <span className="text-gold font-mono">ADIM %100</span>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-navy mb-1">Aradığınız Hissiyat ve Sertlik Seviyesi?</h4>
+            <p className="text-xs text-navy/65">Yastığa ilk dokunduğunuzda ve gece boyu hissetmek istediğiniz dokuyu seçin.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              { id: "medikal", icon: ShieldCheck, title: "Medikal & Ortopedik Destek (Orta-Sert)", sub: "Başın gömülmediği, sabit ve anatomik omurga desteği." },
+              { id: "jel", icon: ThermometerSnowflake, title: "Serin Jel ve Dengeli Esneklik (Orta)", sub: "Serinletici his ile visco konforunun dengeli birleşimi." },
+              { id: "yumusak", icon: Cloud, title: "Bulut Gibi Yumuşak ve Saran His (Yumuşak)", sub: "Derin batma hissi ve omurgayı hafifçe saran yapı." },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => handleSelectAnswer("firmness", opt.id, 5)}
+                className="w-full text-left p-4 rounded-xl border-2 border-navy/10 hover:border-gold bg-white hover:bg-[#FAF6F0]/40 transition-all flex items-start gap-4 group cursor-pointer"
+              >
+                <div className="p-3 rounded-lg bg-navy/5 text-navy group-hover:bg-gold group-hover:text-white transition-colors shrink-0 mt-0.5">
+                  <opt.icon size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-navy group-hover:text-gold transition-colors">{opt.title}</p>
+                  <p className="text-xs text-navy/60 mt-0.5">{opt.sub}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* STEP 5: RESULT SCREEN */}
+      {step === 5 && (
+        <div className="space-y-6 animate-image-fade">
+          <div className="bg-gradient-to-br from-[#1E2D3D] via-[#173156] to-[#0F1E2E] rounded-2xl p-6 md:p-8 text-white shadow-xl border border-gold/30">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden bg-white/10 shrink-0 border border-white/20 p-2 shadow-inner">
+                <img src={recProduct.images[0].src} alt={recProduct.name} className="w-full h-full object-contain" />
+                <span className="absolute top-2 left-2 bg-gold text-white text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                  %{matchScore} SANA ÖZEL UYUMLU
+                </span>
+              </div>
+              <div className="flex-1 text-center md:text-left space-y-3">
+                <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                  <span className="bg-gold/20 text-gold text-[10px] font-bold px-2.5 py-1 rounded-md border border-gold/30">
+                    {recProduct.series}
+                  </span>
+                  <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-md border border-emerald-500/30">
+                    {recProduct.badge1}
+                  </span>
+                </div>
+                <h4 className="text-2xl md:text-3xl font-extrabold text-white">{recProduct.name}</h4>
+                <p className="text-xs md:text-sm text-white/75 leading-relaxed">
+                  Yanıtlarınıza göre yapay zeka destekli rehberimiz size en yüksek uyku konforunu sunan bu modeli eşleştirdi.
+                </p>
+                <div className="pt-2 flex items-baseline justify-center md:justify-start gap-3">
+                  <span className="text-2xl font-extrabold text-gold">{formatPrice(recProduct.basePrice)}</span>
+                  <span className="text-sm text-white/40 line-through">{formatPrice(recProduct.basePrice + 300)}</span>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded uppercase">Kargo Bedava</span>
+                </div>
+              </div>
+            </div>
+
+            {/* REASONS BULLETS */}
+            <div className="mt-6 pt-6 border-t border-white/10 space-y-2">
+              <p className="text-[11px] font-extrabold uppercase tracking-widest text-gold mb-3">NEDEN BU YASTIK SİZİN İÇİN İDEAL?</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                {matchReasons.map((r, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-white/90 bg-white/5 p-3 rounded-xl border border-white/10">
+                    <CheckCircle2 size={16} className="text-gold shrink-0 mt-0.5" />
+                    <span>{r}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => {
+                  onSelectProduct(recommendedId)
+                  if (isModal && onCloseModal) onCloseModal()
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                }}
+                className="flex-1 bg-gold hover:bg-gold/90 text-navy text-xs font-bold uppercase tracking-wider py-4 rounded-xl shadow-lg transition-transform hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Bu Yastığı Seç & Sayfayı Güncelle</span>
+                <ChevronRight size={16} />
+              </button>
+              <button
+                onClick={() => {
+                  onSelectProduct(recommendedId)
+                  if (isModal && onCloseModal) onCloseModal()
+                  onOpenConfig()
+                }}
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider py-4 rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Doğrudan Sepete Ekle</span>
+              </button>
+            </div>
+            <div className="text-center mt-4">
+              <button onClick={resetQuiz} className="text-xs text-white/60 hover:text-white underline cursor-pointer">
+                Testi Yeniden Başlat
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function App() {
   const [currentProductId, setCurrentProductId] = useState<ProductId>("jelli")
   const product = PRODUCTS[currentProductId]
 
+  const [showAssistantModal, setShowAssistantModal] = useState(false)
   const [showCertModal, setShowCertModal] = useState(false)
+  const [showLightboxModal, setShowLightboxModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState(0)
   const [form, setForm] = useState<string>(product.forms[0].id)
   const [softness, setSoftness] = useState<Softness>("yumusak")
@@ -324,17 +804,31 @@ export default function App() {
     setPillowConfigs((prev) => { const c = [...prev]; c[index] = { ...c[index], [key]: value }; return c })
   }
 
-  const handlePrevImage = () => setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length)
-  const handleNextImage = () => setSelectedImage((prev) => (prev + 1) % product.images.length)
+  const handlePrevImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length)
+  }
+  const handleNextImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setSelectedImage((prev) => (prev + 1) % product.images.length)
+  }
   const currentImg = product.images[selectedImage]
 
   return (
     <div className="bg-[#FAF8F5] min-h-screen text-navy font-sans">
       {/* TOP BAR */}
-      <div className="bg-[#1E2D3D] text-[#F6F3ED] text-[11px] font-bold py-2.5 px-4 text-center tracking-wider flex items-center justify-center gap-2">
+      <div className="bg-[#1E2D3D] text-[#F6F3ED] text-[11px] font-bold py-2.5 px-4 text-center tracking-wider flex items-center justify-center gap-2 flex-wrap">
         <span>TÜM SİTEDE TÜM ÜRÜNLERDE KARGO ÜCRETSİZ!</span>
         <span className="text-gold">·</span>
         <span>30 GÜN HİJYENİK İADE GARANTİSİ</span>
+        <span className="text-gold">·</span>
+        <button
+          onClick={() => setShowAssistantModal(true)}
+          className="text-gold hover:text-white transition-colors cursor-pointer flex items-center gap-1 bg-white/10 px-2.5 py-0.5 rounded-full"
+        >
+          <Sparkles size={12} />
+          <span>✨ Yastık Seçim Asistanı</span>
+        </button>
       </div>
 
       {/* NAV */}
@@ -356,7 +850,7 @@ export default function App() {
                 <a key={n} href="#" className="text-[12px] font-semibold text-navy/80 hover:text-gold transition-colors tracking-tight whitespace-nowrap">{n}</a>
               ))}
             </nav>
-            <button className="relative px-3.5 py-2 rounded-full bg-navy/4 hover:bg-navy/8 transition-colors shrink-0 flex items-center gap-1 ml-auto">
+            <button className="relative px-3.5 py-2 rounded-full bg-navy/4 hover:bg-navy/8 transition-colors shrink-0 flex items-center gap-1 ml-auto cursor-pointer">
               <span className="text-xs font-bold text-navy uppercase tracking-wider">Sepet</span>
               <span className="w-4 h-4 rounded-full bg-gold text-[9px] font-bold text-white flex items-center justify-center">2</span>
             </button>
@@ -372,28 +866,44 @@ export default function App() {
             <div className="hidden lg:flex flex-col gap-2.5 w-[76px] shrink-0 overflow-y-auto pr-1 max-h-[calc(100vh-180px)]">
               {product.images.map((img: any, i: number) => (
                 <button key={i} onClick={() => setSelectedImage(i)}
-                  className={`w-full aspect-[2/3] rounded-[14px] overflow-hidden border-2 transition-all ${selectedImage === i ? "border-gold shadow-md scale-[1.02]" : "border-navy/10 hover:border-navy/30 opacity-70 hover:opacity-100"}`}>
+                  className={`w-full aspect-[2/3] rounded-[14px] overflow-hidden border-2 transition-all cursor-pointer ${selectedImage === i ? "border-gold shadow-md scale-[1.02]" : "border-navy/10 hover:border-navy/30 opacity-70 hover:opacity-100"}`}>
                   <img src={img.src} className="w-full h-full object-cover" alt={img.desc} />
                 </button>
               ))}
             </div>
-            <div className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-[2/3] max-h-[calc(100vh-180px)]">
-              <img key={`${currentProductId}-${selectedImage}`} src={currentImg.src} className="w-full h-full object-contain animate-image-fade" alt={currentImg.desc} />
+            <div
+              onClick={() => setShowLightboxModal(true)}
+              className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-[2/3] max-h-[calc(100vh-180px)] cursor-zoom-in"
+            >
+              <img key={`${currentProductId}-${selectedImage}`} src={currentImg.src} className="w-full h-full object-contain animate-image-fade group-hover:scale-105 transition-transform duration-500" alt={currentImg.desc} />
+              
+              {/* HOVER BÜYÜT BİLGİ OVERLAY */}
+              <div className="absolute inset-0 bg-navy/20 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="bg-white/95 text-navy font-bold text-xs px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 border border-navy/10">
+                  🔍 Görseli Büyüt & Detaylı İncele
+                </span>
+              </div>
+
               <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col gap-1.5 md:gap-2 z-10 pointer-events-none">
                 <span className="bg-navy text-white text-[9px] md:text-[10px] font-bold px-2.5 py-1 md:px-3 md:py-1.5 rounded-full tracking-[0.08em] w-fit shadow-sm">{product.badge1}</span>
                 <span className="bg-gold text-white text-[9px] md:text-[10px] font-bold px-2.5 py-1 md:px-3 md:py-1.5 rounded-full tracking-[0.08em] w-fit shadow-sm">{product.badge2}</span>
               </div>
-              <button onClick={handlePrevImage} className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/90 hover:bg-white text-navy border border-navy/15 shadow-md flex items-center justify-center backdrop-blur-md transition-all hover:scale-110 opacity-90 group-hover:opacity-100">
+              <button onClick={handlePrevImage} className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/90 hover:bg-white text-navy border border-navy/15 shadow-md flex items-center justify-center backdrop-blur-md transition-all hover:scale-110 opacity-90 group-hover:opacity-100 cursor-pointer">
                 <ChevronLeft size={18} />
               </button>
-              <button onClick={handleNextImage} className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/90 hover:bg-white text-navy border border-navy/15 shadow-md flex items-center justify-center backdrop-blur-md transition-all hover:scale-110 opacity-90 group-hover:opacity-100">
+              <button onClick={handleNextImage} className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/90 hover:bg-white text-navy border border-navy/15 shadow-md flex items-center justify-center backdrop-blur-md transition-all hover:scale-110 opacity-90 group-hover:opacity-100 cursor-pointer">
                 <ChevronRight size={18} />
               </button>
               <div className="absolute bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-white/90 backdrop-blur-md px-3 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl border border-navy/10 shadow-sm flex items-center justify-between z-10">
                 <span className="text-[11px] md:text-[12px] font-semibold text-navy truncate pr-2">{currentImg.desc}</span>
-                <span className="text-[9px] md:text-[10px] font-bold text-gold bg-gold/10 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full shrink-0">Görsel {selectedImage + 1} / {product.images.length}</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setShowLightboxModal(true); }}
+                  className="text-[9px] md:text-[10px] font-bold text-gold bg-gold/10 hover:bg-gold hover:text-white transition-colors px-2.5 py-1 rounded-full shrink-0 flex items-center gap-1 cursor-pointer"
+                >
+                  🔍 Büyüt ({selectedImage + 1}/{product.images.length})
+                </button>
               </div>
-              <div className="flex lg:hidden absolute bottom-14 left-1/2 -translate-x-1/2 gap-1.5 z-10">
+              <div className="flex lg:hidden absolute bottom-14 left-1/2 -translate-x-1/2 gap-1.5 z-10" onClick={(e) => e.stopPropagation()}>
                 {product.images.map((_: any, i: number) => (
                   <button key={i} onClick={() => setSelectedImage(i)} className={`w-2 h-2 rounded-full transition-all ${selectedImage === i ? "bg-gold scale-125" : "bg-navy/25"}`} />
                 ))}
@@ -494,6 +1004,25 @@ export default function App() {
               </div>
             </div>
 
+            {/* ASSISTANT QUICK PROMPT BANNER */}
+            <div
+              onClick={() => setShowAssistantModal(true)}
+              className="bg-gradient-to-r from-gold/15 via-amber-500/10 to-gold/5 border border-gold/35 rounded-2xl p-4 mb-8 flex items-center justify-between cursor-pointer group hover:border-gold transition-all shadow-2xs hover:shadow-sm"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="p-3 rounded-xl bg-gold text-white shadow-3xs group-hover:scale-110 transition-transform shrink-0">
+                  <Sparkles size={18} />
+                </div>
+                <div>
+                  <p className="text-[13px] font-bold text-navy group-hover:text-gold transition-colors">Hangi Yastık Sana Uygun?</p>
+                  <p className="text-[11px] text-navy/65">Boyun fıtığı, terleme ve yatış şekline göre 3 soruda ideal yastığını bul.</p>
+                </div>
+              </div>
+              <span className="text-[11px] font-extrabold text-gold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0 ml-2 bg-white/80 px-3 py-1.5 rounded-lg border border-gold/30">
+                Testi Başlat <ChevronRight size={14} />
+              </span>
+            </div>
+
             <hr className="border-0 border-t border-navy/8 mb-8" />
 
             {/* FORM */}
@@ -590,10 +1119,68 @@ export default function App() {
               </button>
             </div>
 
-            {/* TRUST */}
-            <div className="flex items-center justify-center gap-4 md:gap-6 text-[11px] md:text-[12px] font-medium text-navy/70 mb-10 flex-wrap">
-              <span className="text-emerald-700 font-bold">Tüm Ürünlerde Ücretsiz Kargo</span>
-              <span>·</span><span>30 Gün İade</span><span>·</span><span>Güvenli Ödeme</span>
+            {/* TRUST BADGES GRID */}
+            <div className="space-y-3 mb-10">
+              <div className="grid grid-cols-2 gap-2.5">
+                {/* BADGE 1: 99 GECE DENEME */}
+                <div className="p-3 rounded-xl bg-white border border-gold/40 shadow-3xs flex items-start gap-2.5 hover:border-gold hover:shadow-2xs transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-gold/15 text-gold flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+                    <Moon size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-extrabold text-navy leading-snug">99 Gece Deneme Garantisi</p>
+                    <p className="text-[10px] text-navy/60 leading-relaxed mt-0.5">Evinde 99 gece dene, koşulsuz iade & değişim hakkı.</p>
+                  </div>
+                </div>
+
+                {/* BADGE 2: OEKO-TEX */}
+                <div
+                  onClick={() => setShowCertModal(true)}
+                  className="p-3 rounded-xl bg-white border border-emerald-600/30 shadow-3xs flex items-start gap-2.5 hover:border-emerald-600 hover:shadow-2xs transition-all cursor-pointer group"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5 group-hover:scale-105 transition-transform">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <p className="text-[12px] font-extrabold text-navy group-hover:text-emerald-700 transition-colors leading-snug">OEKO-TEX® Sertifikalı</p>
+                      <span className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1 rounded">İncele 🔍</span>
+                    </div>
+                    <p className="text-[10px] text-navy/60 leading-relaxed mt-0.5">Zararlı madde içermeyen %100 hijyenik tekstil.</p>
+                  </div>
+                </div>
+
+                {/* BADGE 3: ÜCRETSİZ KARGO */}
+                <div className="p-3 rounded-xl bg-white border border-navy/10 shadow-3xs flex items-start gap-2.5 hover:border-navy/20 hover:shadow-2xs transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-navy/5 text-navy flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+                    <Package size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-extrabold text-navy leading-snug">Ücretsiz & Hızlı Kargo</p>
+                    <p className="text-[10px] text-navy/60 leading-relaxed mt-0.5">Tüm siparişlerde ücretsiz sigortalı gönderim.</p>
+                  </div>
+                </div>
+
+                {/* BADGE 4: 10 YIL GARANTİ */}
+                <div className="p-3 rounded-xl bg-white border border-navy/10 shadow-3xs flex items-start gap-2.5 hover:border-navy/20 hover:shadow-2xs transition-all">
+                  <div className="w-8 h-8 rounded-lg bg-navy/5 text-navy flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+                    <Award size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-extrabold text-navy leading-snug">10 Yıl Şekil Garantisi</p>
+                    <p className="text-[10px] text-navy/60 leading-relaxed mt-0.5">Çökme ve sarkma yapmayan visco köpük.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* FOOTER SUMMARY LINE */}
+              <div className="flex items-center justify-center gap-3 text-[11px] font-semibold text-navy/60 pt-1">
+                <span className="flex items-center gap-1 text-emerald-700 font-bold"><CheckCircle2 size={13} /> %100 Güvenli Ödeme</span>
+                <span>·</span>
+                <span>3D Secure</span>
+                <span>·</span>
+                <span>Anında Değişim</span>
+              </div>
             </div>
           </div>
         </div>
@@ -835,7 +1422,7 @@ export default function App() {
       <footer className="bg-white border-t border-navy/8 py-10 md:py-16">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
           <a href="#" className="flex items-center"><img src="/images/logo.png" alt="Pillow Market Logo" className="h-16 w-16 object-contain" /></a>
-          <p className="text-[13px] text-navy/50">© 2026 Pillow Market A.Ş. · OEKO-TEX® Sertifikalı Üretim</p>
+          <p className="text-[13px] text-navy/50">© 2026 Pillow Market</p>
           <div className="flex gap-4">
             {["Visa", "Mastercard", "iyzico"].map((p) => (
               <span key={p} className="text-[11px] text-navy/50 font-medium px-3 py-1.5 border border-navy/10 rounded-[6px]">{p}</span>
@@ -909,6 +1496,83 @@ export default function App() {
             </div>
             <div className="mt-4 pt-3 border-t border-navy/8 flex justify-end">
               <button onClick={() => setShowCertModal(false)} className="px-5 py-2 rounded-xl bg-navy text-white text-xs font-bold hover:bg-navy/90 transition-colors cursor-pointer">Kapat</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ASSISTANT MODAL */}
+      {showAssistantModal && (
+        <div className="fixed inset-0 z-50 bg-navy/80 backdrop-blur-sm flex items-center justify-center p-4 animate-image-fade" onClick={() => setShowAssistantModal(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-[840px]">
+            <PillowAssistant
+              isModal
+              onCloseModal={() => setShowAssistantModal(false)}
+              onSelectProduct={switchProduct}
+              onOpenConfig={handleOpenConfig}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* LIGHTBOX / FULLSCREEN IMAGE DETAIL MODAL */}
+      {showLightboxModal && (
+        <div className="fixed inset-0 z-50 bg-navy/95 backdrop-blur-md flex flex-col items-center justify-between p-4 md:p-6 animate-image-fade" onClick={() => setShowLightboxModal(false)}>
+          {/* HEADER */}
+          <div className="w-full max-w-[1280px] flex items-center justify-between z-10 shrink-0" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-extrabold tracking-widest text-gold uppercase bg-gold/15 px-3 py-1 rounded-full border border-gold/30">
+                {product.series}
+              </span>
+              <h4 className="text-white font-bold text-sm md:text-base hidden sm:block">{product.images[selectedImage].desc}</h4>
+            </div>
+            <button
+              onClick={() => setShowLightboxModal(false)}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* MAIN IMAGE & NAVIGATION ARROWS */}
+          <div className="relative flex-1 w-full max-w-[1000px] flex items-center justify-center my-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={handlePrevImage}
+              className="absolute left-2 md:left-4 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all hover:scale-110 cursor-pointer backdrop-blur-xs shadow-lg"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            <div className="relative max-w-full max-h-[72vh] flex items-center justify-center">
+              <img
+                key={`lightbox-${currentProductId}-${selectedImage}`}
+                src={product.images[selectedImage].src}
+                alt={product.images[selectedImage].desc}
+                className="max-w-full max-h-[72vh] object-contain animate-image-fade rounded-2xl shadow-2xl"
+              />
+            </div>
+
+            <button
+              onClick={handleNextImage}
+              className="absolute right-2 md:right-4 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all hover:scale-110 cursor-pointer backdrop-blur-xs shadow-lg"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+
+          {/* THUMBNAILS BAR & MOBILE DESCRIPTION */}
+          <div className="w-full max-w-[800px] flex flex-col items-center gap-3 z-10 shrink-0" onClick={(e) => e.stopPropagation()}>
+            <p className="text-white/80 text-xs font-medium text-center sm:hidden">{product.images[selectedImage].desc}</p>
+            <div className="flex items-center justify-center gap-2.5 overflow-x-auto py-1 max-w-full">
+              {product.images.map((img: any, i: number) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedImage(i)}
+                  className={`w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${selectedImage === i ? "border-gold scale-105 shadow-md opacity-100 ring-2 ring-gold/50" : "border-white/20 opacity-50 hover:opacity-100"}`}
+                >
+                  <img src={img.src} alt={img.desc} className="w-full h-full object-cover" />
+                </button>
+              ))}
             </div>
           </div>
         </div>
