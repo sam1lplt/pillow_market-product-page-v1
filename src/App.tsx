@@ -821,18 +821,16 @@ export default function App() {
     touchEndY.current = e.targetTouches[0].clientY
   }
 
-  const handleTouchEnd = (onTap?: () => void) => {
+  const handleTouchEnd = () => {
     const diffX = touchStartX.current - touchEndX.current
     const diffY = touchStartY.current - touchEndY.current
 
-    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.2) {
       if (diffX > 0) {
         handleNextImage()
       } else {
         handlePrevImage()
       }
-    } else if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
-      if (onTap) onTap()
     }
 
     touchStartX.current = 0
@@ -911,9 +909,13 @@ export default function App() {
             <div
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
-              onTouchEnd={() => handleTouchEnd(() => setShowLightboxModal(true))}
-              onClick={() => setShowLightboxModal(true)}
-              className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-[2/3] max-h-[calc(100vh-180px)] cursor-zoom-in select-none touch-pan-y"
+              onTouchEnd={handleTouchEnd}
+              onClick={() => {
+                if (window.innerWidth >= 768) {
+                  setShowLightboxModal(true)
+                }
+              }}
+              className="relative flex-1 rounded-xl md:rounded-[24px] overflow-hidden bg-slate-100/80 border border-navy/8 flex items-center justify-center group aspect-square sm:aspect-[4/3] lg:aspect-[2/3] max-h-[480px] lg:max-h-[calc(100vh-180px)] select-none touch-pan-y md:cursor-zoom-in"
             >
               <img key={`${currentProductId}-${selectedImage}`} src={currentImg.src} className="w-full h-full object-contain animate-image-fade group-hover:scale-105 transition-transform duration-500" alt={currentImg.desc} />
               
