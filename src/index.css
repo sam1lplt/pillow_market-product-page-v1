@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
 @theme {
   --color-navy: #173156;
   --color-gold: #C79C6C;
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Inter', sans-serif;
+  --font-sans: 'Manrope', sans-serif;
+  --font-serif: 'Manrope', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif; 
   background: #FAF8F5; 
   color: var(--color-navy); 
   -webkit-font-smoothing: antialiased; 

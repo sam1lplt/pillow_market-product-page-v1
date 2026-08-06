@@ -26,7 +26,18 @@ import {
   HelpCircle,
   Sparkle,
   ArrowRight,
+  Search,
+  User,
+  ShoppingBag,
+  Menu,
 } from "lucide-react"
+
+import { CategoryPage } from "./components/CategoryPage"
+import { SubcategoryKey } from "./components/SubcategoryCards"
+import { BundleDeal } from "./components/BundleDeal"
+import { HomePage } from "./components/HomePage"
+import { SearchModal } from "./components/SearchModal"
+import { MobileMenuDrawer } from "./components/MobileMenuDrawer"
 
 type Softness = "yumusak" | "extra"
 type Shipping = "rollpack" | "keten" | "kutu"
@@ -715,10 +726,14 @@ function PillowAssistant({
 }
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<"home" | "category" | "product">("home")
+  const [activeSubcategory, setActiveSubcategory] = useState<SubcategoryKey>("all")
   const [currentProductId, setCurrentProductId] = useState<ProductId>("jelli")
   const product = PRODUCTS[currentProductId]
 
   const [showAssistantModal, setShowAssistantModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showCertModal, setShowCertModal] = useState(false)
   const [showLightboxModal, setShowLightboxModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState(0)
@@ -734,6 +749,23 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState({ days: 6, hours: 4, minutes: 28, seconds: 45 })
   const [showStickyAdd, setShowStickyAdd] = useState(false)
   const mainAddBtnRef = useRef<HTMLButtonElement>(null)
+
+  const navigateToHome = () => {
+    setCurrentView("home")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const navigateToCategory = (_sub?: SubcategoryKey) => {
+    setActiveSubcategory("all")
+    setCurrentView("category")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const navigateToProduct = (id: ProductId = "jelli") => {
+    switchProduct(id)
+    setCurrentView("product")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const switchProduct = (id: ProductId) => {
     const p = PRODUCTS[id]
@@ -851,50 +883,179 @@ export default function App() {
 
   return (
     <div className="bg-[#FAF8F5] min-h-screen text-navy font-sans">
-      {/* TOP BAR */}
-      <div className="bg-[#1E2D3D] text-[#F6F3ED] text-[11px] font-bold py-2.5 px-4 text-center tracking-wider flex items-center justify-center gap-2 flex-wrap">
-        <span>TÜM SİTEDE TÜM ÜRÜNLERDE KARGO ÜCRETSİZ!</span>
-        <span className="text-gold">·</span>
-        <span>30 GÜN HİJYENİK İADE GARANTİSİ</span>
-        <span className="text-gold">·</span>
-        <button
-          onClick={() => setShowAssistantModal(true)}
-          className="text-gold hover:text-white transition-colors cursor-pointer flex items-center gap-1 bg-white/10 px-2.5 py-0.5 rounded-full"
-        >
-          <Sparkles size={12} />
-          <span>✨ Yastık Seçim Asistanı</span>
-        </button>
+      {/* ═══════════════════════════════════════════════════
+          TOP ANNOUNCEMENT BAR — Marquee-style premium bar
+         ═══════════════════════════════════════════════════ */}
+      <div className="bg-gradient-to-r from-[#0F1C2E] via-[#1A2D42] to-[#0F1C2E] text-[#F6F3ED] text-[10px] md:text-[11px] font-semibold py-2 px-4 overflow-hidden relative">
+        <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+          <span className="flex items-center gap-1.5 tracking-wider uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Tüm Türkiye'ye Ücretsiz Kargo
+          </span>
+          <span className="hidden md:block w-px h-3 bg-white/20" />
+          <span className="flex items-center gap-1.5 tracking-wider uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+            30 Gün İade Garantisi
+          </span>
+          <span className="hidden md:block w-px h-3 bg-white/20" />
+          <button
+            onClick={() => setShowAssistantModal(true)}
+            className="flex items-center gap-1.5 tracking-wider uppercase text-gold hover:text-white transition-colors cursor-pointer bg-white/[0.07] hover:bg-white/[0.12] px-3 py-1 rounded-full border border-white/10"
+          >
+            <Sparkles size={11} className="animate-pulse" />
+            <span>Yastık Seçim Asistanı</span>
+          </button>
+        </div>
       </div>
 
-      {/* NAV */}
-      <header className="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-navy/10 shadow-xs">
-        <div className="max-w-[1360px] mx-auto px-4 md:px-6 h-[64px] md:h-[96px] flex items-center justify-between">
-          <nav className="hidden xl:flex gap-7 items-center flex-1 justify-end pr-10">
-            {["Ergonomik Uyku Konforu", "Jel Teknolojileri", "Seyahat Yastıkları"].map((n) => (
-              <a key={n} href="#" className="text-[12px] font-semibold text-navy/80 hover:text-gold transition-colors tracking-tight whitespace-nowrap">{n}</a>
-            ))}
-          </nav>
-          <div className="flex items-center justify-center shrink-0 px-2">
-            <a href="#" className="group flex items-center justify-center p-1">
-              <img src="/images/logo.png" alt="Pillow Market" className="h-14 w-14 md:h-20 md:w-20 lg:h-24 lg:w-24 object-contain transition-transform group-hover:scale-105 drop-shadow-sm py-1" />
-            </a>
-          </div>
-          <div className="flex items-center justify-between flex-1 pl-10">
-            <nav className="hidden xl:flex gap-7 items-center">
-              {["Akıllı Uyku Teknolojileri", "Ergonomik Uyku Konforu", "Seyahat Yastıkları"].map((n) => (
-                <a key={n} href="#" className="text-[12px] font-semibold text-navy/80 hover:text-gold transition-colors tracking-tight whitespace-nowrap">{n}</a>
-              ))}
-            </nav>
-            <button className="relative px-3.5 py-2 rounded-full bg-navy/4 hover:bg-navy/8 transition-colors shrink-0 flex items-center gap-1 ml-auto cursor-pointer">
-              <span className="text-xs font-bold text-navy uppercase tracking-wider">Sepet</span>
-              <span className="w-4 h-4 rounded-full bg-gold text-[9px] font-bold text-white flex items-center justify-center">2</span>
-            </button>
+      {/* ═══════════════════════════════════════════════════
+          MAIN HEADER — Premium glassmorphism nav
+         ═══════════════════════════════════════════════════ */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-navy/[0.06] shadow-[0_1px_20px_rgba(0,0,0,0.04)]">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
+          <div className="h-[60px] md:h-[76px] flex items-center justify-between gap-4">
+
+            {/* ── LEFT: HAMBURGER (mobile) + NAV LINKS (desktop) ── */}
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <button
+                onClick={() => setShowMobileMenu(true)}
+                className="xl:hidden p-2.5 -ml-2 text-navy/70 hover:text-navy hover:bg-navy/5 rounded-xl transition-all cursor-pointer"
+              >
+                <Menu size={21} strokeWidth={2.2} />
+              </button>
+
+              <nav className="hidden xl:flex items-center gap-1">
+                {[
+                  { label: "Serinletici Jel", sub: "ekstra-soguk" as const },
+                  { label: "Ergonomik Visco", sub: "boyun-destek" as const },
+                  { label: "Seyahat Yastıkları", sub: "seyahat" as const },
+                ].map((item) => (
+                  <button
+                    key={item.sub}
+                    onClick={() => navigateToCategory(item.sub)}
+                    className="group relative px-4 py-2 text-[12px] font-bold uppercase tracking-[0.08em] text-navy/70 hover:text-navy transition-colors cursor-pointer rounded-lg hover:bg-navy/[0.04]"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0.5 left-4 right-4 h-[2px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            {/* ── CENTER: LOGO ── */}
+            <div className="flex items-center justify-center shrink-0">
+              <button
+                onClick={navigateToHome}
+                className="group flex items-center justify-center cursor-pointer relative"
+              >
+                <img
+                  src="/images/logo.png"
+                  alt="Pillow Market"
+                  className="h-11 md:h-14 object-contain transition-all duration-300 group-hover:scale-[1.06]"
+                />
+              </button>
+            </div>
+
+            {/* ── RIGHT: SEARCH + ICONS + CART ── */}
+            <div className="flex items-center justify-end gap-1.5 md:gap-2 flex-1 min-w-0">
+
+              {/* Search Button */}
+              <button
+                onClick={() => setShowSearchModal(true)}
+                className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-navy/[0.04] hover:bg-navy/[0.08] text-navy/50 hover:text-navy transition-all cursor-pointer group"
+                title="Arama"
+              >
+                <Search size={16} strokeWidth={2.2} />
+                <span className="text-[11px] font-medium tracking-wide">Ara...</span>
+              </button>
+              <button
+                onClick={() => setShowSearchModal(true)}
+                className="md:hidden p-2.5 text-navy/60 hover:text-navy hover:bg-navy/5 rounded-xl transition-all cursor-pointer"
+                title="Arama"
+              >
+                <Search size={19} strokeWidth={2.2} />
+              </button>
+
+              {/* Divider */}
+              <span className="hidden md:block w-px h-5 bg-navy/10 mx-1" />
+
+              {/* Wishlist */}
+              <button
+                onClick={() => navigateToCategory("all")}
+                className="p-2.5 text-navy/60 hover:text-rose-500 transition-all relative cursor-pointer rounded-xl hover:bg-rose-50"
+                title="Favoriler"
+              >
+                <Heart size={19} strokeWidth={2.2} />
+                <span className="absolute top-1.5 right-1.5 w-[14px] h-[14px] rounded-full bg-rose-500 text-[8px] font-black text-white flex items-center justify-center ring-2 ring-white">0</span>
+              </button>
+
+              {/* User (hidden on mobile) */}
+              <button
+                className="hidden lg:flex p-2.5 text-navy/60 hover:text-navy transition-all cursor-pointer rounded-xl hover:bg-navy/5"
+                title="Hesabım"
+              >
+                <User size={19} strokeWidth={2.2} />
+              </button>
+
+              {/* Divider */}
+              <span className="hidden md:block w-px h-5 bg-navy/10 mx-1" />
+
+              {/* Cart Button — Premium */}
+              <button
+                onClick={handleOpenConfig}
+                className="flex items-center gap-2 pl-3.5 pr-2 py-1.5 rounded-full bg-gradient-to-r from-navy to-[#1A2D42] text-white hover:from-[#1A2D42] hover:to-navy transition-all cursor-pointer shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] group"
+              >
+                <ShoppingBag size={16} strokeWidth={2.2} className="text-gold group-hover:rotate-[-6deg] transition-transform" />
+                <span className="text-[11px] font-extrabold uppercase tracking-wider hidden sm:inline">Sepet</span>
+                <span className="w-[22px] h-[22px] rounded-full bg-gold text-[10px] font-black text-navy flex items-center justify-center shadow-inner">2</span>
+              </button>
+            </div>
+
           </div>
         </div>
       </header>
 
+      {/* DYNAMIC VIEW ROUTER */}
+      {currentView === "home" ? (
+        <HomePage
+          onNavigateToCategory={(sub) => navigateToCategory((sub || "all") as SubcategoryKey)}
+          onNavigateToProduct={(id) => navigateToProduct(id as ProductId)}
+          onOpenQuizModal={() => setShowAssistantModal(true)}
+        />
+      ) : currentView === "category" ? (
+        <CategoryPage
+          activeSubcategory={activeSubcategory}
+          onSelectSubcategory={(key) => setActiveSubcategory(key)}
+          onSelectProduct={(id) => {
+            if (PRODUCTS[id as ProductId]) {
+              switchProduct(id as ProductId)
+            }
+            setCurrentView("product")
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
+          onOpenQuizModal={() => setShowAssistantModal(true)}
+          onAddToCart={handleAdd}
+        />
+      ) : (
+        <>
+          {/* BACK TO CATEGORY NAV BAR FOR PRODUCT PAGE */}
+          <div className="bg-navy/5 py-2.5 px-4 border-b border-navy/8">
+            <div className="max-w-[1280px] mx-auto flex items-center justify-between">
+              <button
+                onClick={navigateToHome}
+                className="text-xs font-bold text-navy hover:text-gold transition-colors inline-flex items-center gap-1 cursor-pointer"
+              >
+                <ChevronLeft size={16} />
+                <span>← Ana Sayfaya Dön</span>
+              </button>
+              <span className="text-[11px] font-semibold text-navy/50 hidden sm:inline">
+                Ürün Detay Sayfası: {product.name}
+              </span>
+            </div>
+          </div>
+
       {/* MAIN */}
-      <main className="max-w-[1280px] mx-auto px-4 md:px-6 pt-6 md:pt-12 pb-16 md:pb-32">
+      <main className="max-w-[1280px] mx-auto px-4 md:px-6 pt-6 md:pt-12 pb-6 md:pb-8">
         <div className="grid grid-cols-12 gap-4 md:gap-10 items-start">
           {/* GALLERY */}
           <div className="col-span-12 lg:col-span-6 lg:sticky lg:top-28 flex gap-4 h-auto items-start">
@@ -959,7 +1120,13 @@ export default function App() {
             <div className="flex items-center gap-2 mb-4">
               {["Ana Sayfa", "Yastıklar", product.shortName].map((c: string, i: number, a: string[]) => (
                 <div key={c} className="flex items-center gap-2">
-                  <a href="#" className={`text-[11px] tracking-[0.06em] uppercase ${i === a.length - 1 ? "text-navy font-semibold" : "text-navy/45 hover:text-navy/70 transition-colors"}`}>{c}</a>
+                  <button
+                    type="button"
+                    onClick={() => { if (i < a.length - 1) navigateToCategory("all") }}
+                    className={`text-[11px] tracking-[0.06em] uppercase ${i === a.length - 1 ? "text-navy font-semibold cursor-default" : "text-navy/45 hover:text-gold transition-colors cursor-pointer"}`}
+                  >
+                    {c}
+                  </button>
                   {i < a.length - 1 && <ChevronRight size={11} className="text-navy/30" />}
                 </div>
               ))}
@@ -1247,20 +1414,27 @@ export default function App() {
         </div>
       )}
 
-      {/* STAT BAND */}
-      <section className="bg-navy text-white py-16 md:py-24">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-          <div>
-            <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[40px] leading-[1.1] mb-4 md:mb-6">{product.statBandTitle}</h2>
-            <p className="text-[16px] text-white/70 leading-[1.7] max-w-[480px]">{product.statBandDesc}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 md:gap-y-12">
-            {product.stats.map((s: any) => (
-              <div key={s.label} className="border-t border-gold/40 pt-4 md:pt-6">
-                <p className="font-serif text-[32px] md:text-[48px] text-gold leading-none mb-2 md:mb-3">{s.val}</p>
-                <p className="text-[11px] tracking-[0.1em] text-white/60 font-semibold">{s.label}</p>
-              </div>
-            ))}
+      {/* BİRLİKTE AL (BUNDLE DEAL) SECTION - RIGHT ABOVE 10 YILLIK AR-GE */}
+      <section className="max-w-[1280px] mx-auto px-4 md:px-6 pt-2 pb-8 md:pb-12">
+        <BundleDeal onAddBundle={() => handleAdd()} />
+      </section>
+
+      {/* STAT BAND (10 YILLIK AR-GE) */}
+      <section className="bg-navy text-white py-16 md:py-24 relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+            <div>
+              <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[40px] leading-[1.1] mb-4 md:mb-6">{product.statBandTitle}</h2>
+              <p className="text-[16px] text-white/70 leading-[1.7] max-w-[480px]">{product.statBandDesc}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 md:gap-y-12">
+              {product.stats.map((s: any) => (
+                <div key={s.label} className="border-t border-gold/40 pt-4 md:pt-6">
+                  <p className="font-serif text-[32px] md:text-[48px] text-gold leading-none mb-2 md:mb-3">{s.val}</p>
+                  <p className="text-[11px] tracking-[0.1em] text-white/60 font-semibold">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -1382,7 +1556,7 @@ export default function App() {
               <p className="text-[11px] tracking-[0.12em] uppercase text-gold font-bold mb-3">BUNU ALANLAR BUNLARI DA ALDI</p>
               <h2 className="font-serif text-[28px] md:text-[36px] text-navy">Seti Tamamla</h2>
             </div>
-            <a href="#" className="text-[13px] font-semibold text-navy flex items-center gap-1 border-b border-navy pb-0.5 hover:text-gold hover:border-gold transition-colors">Tümünü Gör <ChevronRight size={14} /></a>
+            <button onClick={() => navigateToCategory("all")} className="text-[13px] font-semibold text-navy flex items-center gap-1 border-b border-navy pb-0.5 hover:text-gold hover:border-gold transition-colors cursor-pointer">Tümünü Gör <ChevronRight size={14} /></button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {product.crossSell.map((item: any) => (
@@ -1404,11 +1578,11 @@ export default function App() {
                     <span className="text-[18px] font-semibold text-gold">{item.price}</span>
                     {item.isProduct ? (
                       <button onClick={(e) => { e.stopPropagation(); item.id && switchProduct(item.id as ProductId) }}
-                        className="text-[12px] font-semibold px-4 py-2 border border-gold text-gold rounded-full hover:bg-gold hover:text-white transition-colors flex items-center gap-1">
+                        className="text-[12px] font-semibold px-4 py-2 border border-gold text-gold rounded-full hover:bg-gold hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
                         Ürünü Gör <ChevronRight size={11} />
                       </button>
                     ) : (
-                      <button className="text-[12px] font-semibold px-4 py-2 border border-navy text-navy rounded-full hover:bg-navy hover:text-white transition-colors">Sepete Ekle</button>
+                      <button className="text-[12px] font-semibold px-4 py-2 border border-navy text-navy rounded-full hover:bg-navy hover:text-white transition-colors cursor-pointer">Sepete Ekle</button>
                     )}
                   </div>
                 </div>
@@ -1459,11 +1633,13 @@ export default function App() {
           </div>
         </div>
       </section>
+        </>
+      )}
 
       {/* FOOTER */}
       <footer className="bg-white border-t border-navy/8 py-10 md:py-16">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-          <a href="#" className="flex items-center"><img src="/images/logo.png" alt="Pillow Market Logo" className="h-16 w-16 object-contain" /></a>
+          <button onClick={navigateToHome} className="flex items-center cursor-pointer"><img src="/images/logo.png" alt="Pillow Market Logo" className="h-16 w-16 object-contain" /></button>
           <p className="text-[13px] text-navy/50">© 2026 Pillow Market</p>
           <div className="flex gap-4">
             {["Visa", "Mastercard", "iyzico"].map((p) => (
@@ -1556,6 +1732,23 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* DEDICATED SEARCH MODAL */}
+      <SearchModal
+        isOpen={showSearchModal}
+        onClose={() => setShowSearchModal(false)}
+        onSelectProduct={(id) => navigateToProduct(id as ProductId)}
+      />
+
+      {/* MOBILE DRAWER MENU */}
+      <MobileMenuDrawer
+        isOpen={showMobileMenu}
+        onClose={() => setShowMobileMenu(false)}
+        onNavigateToHome={navigateToHome}
+        onNavigateToCategory={() => navigateToCategory("all")}
+        onOpenQuizModal={() => setShowAssistantModal(true)}
+        onOpenSearchModal={() => setShowSearchModal(true)}
+      />
 
       {/* LIGHTBOX / FULLSCREEN IMAGE DETAIL MODAL */}
       {showLightboxModal && (
